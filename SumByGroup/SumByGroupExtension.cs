@@ -21,7 +21,7 @@ namespace SumByGroup
         {
             if (groupCount <= 0)
             {
-                throw new ArgumentOutOfRangeException("GroupCount should bigger than zero.");
+                throw new ArgumentOutOfRangeException("GroupCount should be bigger than zero.");
             }
 
             int sum = 0;
