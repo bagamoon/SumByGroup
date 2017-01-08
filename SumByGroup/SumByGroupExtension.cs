@@ -32,7 +32,7 @@ namespace SumByGroup
 
                 sum += func(item);                
 
-                //每計算到數量上限或集合中的最後一個元素就回傳當下結果
+                //每計算到每組數量上限或集合中的最後一個元素就回傳當下結果, 並歸零重新計算下一組
                 if ((i + 1) % groupCount == 0 || i == totalCount - 1)
                 {
                     yield return sum;
