@@ -23,22 +23,31 @@ namespace SumByGroup
             {
                 throw new ArgumentOutOfRangeException("GroupCount should be bigger than zero.");
             }
-
-            int sum = 0;
+            
             int totalCount = collection.Count();
-            for (int i = 0; i < totalCount; i++)
-            {                
-                T item = collection.ElementAt(i);
 
-                sum += func(item);                
+            //20170110 註解原有寫法改用linq
+            int index = 0;
+            while (index < totalCount)
+            {
+                yield return collection.Skip(index).Take(groupCount).Sum(func);
+                index += groupCount;
+            }
+            
+            //int sum = 0;
+            //for (int i = 0; i < totalCount; i++)
+            //{                
+            //    T item = collection.ElementAt(i);
 
-                //每計算到每組數量上限或集合中的最後一個元素就回傳當下結果, 並歸零重新計算下一組
-                if ((i + 1) % groupCount == 0 || i == totalCount - 1)
-                {
-                    yield return sum;
-                    sum = 0;
-                }
-            }            
+            //    sum += func(item);                
+
+            //    //每計算到每組數量上限或集合中的最後一個元素就回傳當下結果, 並歸零重新計算下一組
+            //    if ((i + 1) % groupCount == 0 || i == totalCount - 1)
+            //    {
+            //        yield return sum;
+            //        sum = 0;
+            //    }
+            //}            
         }
     }
 }

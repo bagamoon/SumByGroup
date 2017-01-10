@@ -13,7 +13,7 @@ namespace SumByGroup.Tests
     [TestClass()]
     public class SumByGroupTests
     {
-        List<Item> _items = new List<Item>();
+        private List<Item> _items = new List<Item>();
 
         [TestInitialize()]
         public void MyTestInitialize()
@@ -27,7 +27,7 @@ namespace SumByGroup.Tests
             _items.Add(new Item { Id = 7, Cost = 7, Revenue = 17, SellPrice = 27 });
             _items.Add(new Item { Id = 8, Cost = 8, Revenue = 18, SellPrice = 28 });
             _items.Add(new Item { Id = 9, Cost = 9, Revenue = 19, SellPrice = 29 });
-            _items.Add(new Item { Id = 10, Cost =10, Revenue = 20, SellPrice = 30 });
+            _items.Add(new Item { Id = 10, Cost = 10, Revenue = 20, SellPrice = 30 });
             _items.Add(new Item { Id = 11, Cost = 11, Revenue = 21, SellPrice = 31 });
         }
 
@@ -38,7 +38,7 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_Cost_GroupBy_3()
+        public void Sum_Cost_GroupBy_3_Should_Be_6_15_24_21()
         {
             var expected = new List<int> { 6, 15, 24, 21 };
 
@@ -48,7 +48,7 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_Revenue_GroupBy_4()
+        public void Sum_Revenue_GroupBy_4_Should_Be_50_66_60()
         {
             var expected = new List<int> { 50, 66, 60 };
 
@@ -58,7 +58,7 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_Cost_Customize_ComputeValue_GroupBy_5()
+        public void Sum_Cost_Remainder_After_Divided_5_GroupBy_5_Should_Be_10_10_1()
         {
             var expected = new List<int> { 10, 10, 1 };
 
@@ -68,7 +68,7 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_SellPrice_Big_GroupCount()
+        public void Sum_SellPrice_GroupBy_999_Should_Be_Sum_Of_All()
         {
             // 999個一組, 全部加總
             var expected = new List<int> { _items.Sum(p => p.SellPrice) };
@@ -79,7 +79,7 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_SellPrice_Small_GroupCount()
+        public void Sum_SellPrice_Group_By_1_Should_Be_All_Elements()
         {
             // 1個一組, 不須加總
             var expected = _items.Select(p => p.SellPrice);
@@ -90,7 +90,19 @@ namespace SumByGroup.Tests
         }
 
         [TestMethod()]
-        public void SumTest_SellPrice_Negative_GroupCount()
+        public void Sum_Empty_Source_Should_Be_Empty_Result()
+        {            
+            _items.Clear();
+            var expected = _items;
+
+            var actual = _items.SumByGroup(5, p => p.SellPrice).ToList();
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
+
+
+        [TestMethod()]
+        public void Sum_SellPrice_Negative_GroupCount_Should_Throw_ArgumentOutOfRangeException()
         {            
             // 分組數目錯誤
             Action act = () => _items.SumByGroup(-1, p => p.SellPrice).ToList();
