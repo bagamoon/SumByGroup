@@ -13,24 +13,24 @@ namespace SumByGroup
         /// e.g. Items.SumByGroup(4, p => p.Revenue)
         /// </summary>
         /// <typeparam name="T">IEnumerable泛型型別</typeparam>
-        /// <param name="collection">集合</param>
+        /// <param name="source">集合</param>
         /// <param name="groupCount">每組數量, 需大於0</param>
-        /// <param name="func">指定運算式</param>
+        /// <param name="selector">指定運算式</param>
         /// <returns>運算結果的集合</returns>
-        public static IEnumerable<int> SumByGroup<T>(this IEnumerable<T> collection, int groupCount, Func<T, int> func)
+        public static IEnumerable<int> SumByGroup<T>(this IEnumerable<T> source, int groupCount, Func<T, int> selector)
         {
             if (groupCount <= 0)
             {
                 throw new ArgumentOutOfRangeException("GroupCount should be bigger than zero.");
             }
             
-            int totalCount = collection.Count();
+            int totalCount = source.Count();
 
             //20170110 註解原有寫法改用linq
             int index = 0;
             while (index < totalCount)
             {
-                yield return collection.Skip(index).Take(groupCount).Sum(func);
+                yield return source.Skip(index).Take(groupCount).Sum(selector);
                 index += groupCount;
             }
             
